@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Virtual Camera Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .video-container {
+            margin: 20px 0;
+            border: 2px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #videoFeed {
+            max-width: 100%;
+            height: auto;
+        }
+        .button-container {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+    <h1>OBS Virtual Camera Test</h1>
+    
+    <div class="video-container">
+        <img id="videoFeed" src="" alt="Video Feed">
+    </div>
+    
+    <div class="button-container">
+        <button id="startButton" onclick="startCamera()">Start Camera</button>
+        <button id="stopButton" onclick="stopCamera()" disabled>Stop Camera</button>
+    </div>
+    
+    <div id="status"></div>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const videoFeed = document.getElementById('videoFeed');
+        const status = document.getElementById('status');
+
+        function updateStatus(message, isError = false) {
+            status.textContent = message;
+            status.className = isError ? 'error' : 'success';
+        }
+
+        async function startCamera() {
+            try {
+                const response = await fetch('/start_obs', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    videoFeed.src = '/video_feed';
+                    startButton.disabled = true;
+                    stopButton.disabled = false;
+                    updateStatus(data.message);
+                } else {
+                    updateStatus(data.error, true);
+                }
+            } catch (error) {
+                updateStatus('Error starting camera: ' + error.message, true);
+            }
+        }
+
+        async function stopCamera() {
+            try {
+                const response = await fetch('/stop_obs', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    videoFeed.src = '';
+                    startButton.disabled = false;
+                    stopButton.disabled = true;
+                    updateStatus(data.message);
+                } else {
+                    updateStatus(data.error, true);
+                }
+            } catch (error) {
+                updateStatus('Error stopping camera: ' + error.message, true);
+            }
+        }
+    </script>
+</body>
+</html> 

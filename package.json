@@ -1,0 +1,46 @@
+{
+  "name": "voicebridge-desktop",
+  "version": "1.0.0",
+  "description": "VoiceBridge Desktop - Real-time Sign Language Interpreter",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"cd frontend && npm start\" \"electron .\"",
+    "build": "cd frontend && npm run build && electron-builder",
+    "test": "cd frontend && npm test"
+  },
+  "build": {
+    "appId": "com.voicebridge.app",
+    "productName": "VoiceBridge",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "frontend/build/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "frontend/public/favicon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "frontend/public/favicon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "frontend/public/favicon.png"
+    }
+  },
+  "author": "VoiceBridge Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "node-fetch": "^2.6.9"
+  }
+}

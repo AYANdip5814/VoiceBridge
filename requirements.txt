@@ -1,0 +1,25 @@
+# Core dependencies
+numpy>=1.21.0
+opencv-python>=4.5.3.56
+mediapipe>=0.8.9.1
+tensorflow>=2.8.0
+torch>=1.9.0
+torchvision>=0.10.0
+
+# Web framework
+flask>=2.0.1
+flask-cors>=3.0.10
+
+# Computer Vision and ML
+scikit-learn>=0.24.2
+scikit-image>=0.18.2
+
+# Utilities
+python-dotenv>=0.19.0
+requests>=2.26.0
+tqdm>=4.62.0
+
+# Development tools
+pytest>=6.2.5
+black>=21.7b0
+flake8>=3.9.2 
